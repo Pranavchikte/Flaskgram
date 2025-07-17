@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h2 class="text-center mb-4 my-4">Recent Posts</h2>
+    {% if current_user.is_authenticated %}
+        <div class="text-center mb-3">
+            <a href="{{ url_for('post.new_post') }}" class="btn btn-outline-primary">+ New Post</a>
+        </div>
+    {% endif %}
+
+    {% if posts %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for post in posts %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ url_for('static', filename='uploads/' ~ post.image_file) }}"
+                             class="card-img-top" alt="Post image" style="height: 300px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.user.username }}</h5>
+                            {% if post.caption %}
+                                <p class="card-text">{{ post.caption }}</p>
+                            {% endif %}
+                            {% if current_user.is_authenticated and current_user.id == post.user_id %}
+                                <form method="POST" action="{{ url_for('post.delete_post', post_id=post.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-danger mt-2">Delete</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Posted on {{ post.timestamp.strftime('%b %d, %Y') }}</small>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No posts yet.</p>
+    {% endif %}
+{% endblock %}
