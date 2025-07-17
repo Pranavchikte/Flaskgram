@@ -1,6 +1,3 @@
-Here is your **cleaned-up and combined content** as **one copy-paste-ready `README.md` file** — fully integrated and structured properly.
-
----
 
 ```markdown
 # Flaskgram
